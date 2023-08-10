@@ -1,11 +1,13 @@
 package com.ap.homebanking;
-
-import com.ap.homebanking.models.client;
-import com.ap.homebanking.repositories.clientRepository;
+import com.ap.homebanking.models.Account;
+import com.ap.homebanking.models.Client;
+import com.ap.homebanking.repositories.AccountRepository;
+import com.ap.homebanking.repositories.ClientRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import java.time.LocalDate;
 
 @SpringBootApplication
 public class HomebankingApplication {
@@ -15,20 +17,23 @@ public class HomebankingApplication {
 	}
 
 @Bean
-	public CommandLineRunner initData(clientRepository ClientRepository){
+	public CommandLineRunner initData(ClientRepository clientRepository, AccountRepository accountRepository){
 		return (args -> {
 
-			client Client1 = new client();
-			Client1.setFirstName("Melba");
-			Client1.setLastName("Morel");
-			Client1.setEmail("melba@mindhub.com");
+			Account account1 = new Account("VIN001", LocalDate.now(), 5000);
+			Account account2 = new Account("VIN002", LocalDate.now(), 7500);
 
+			Client client1 = new Client("Melba", "Morel", "melba@mindhub.com");
 
-			client Client2 = new client("Juan", "sanchez", "juansanchez@gmail.com");
+			clientRepository.save(client1);
 
-			ClientRepository.save(Client1);
-			ClientRepository.save(Client2);
+			client1.addAccount(account1);
+			client1.addAccount(account2);
+
+			accountRepository.save(account1);
+			accountRepository.save(account2);
 
 		});
+
 	}
 }
