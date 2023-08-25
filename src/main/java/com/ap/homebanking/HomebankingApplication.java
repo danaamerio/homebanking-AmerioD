@@ -1,6 +1,7 @@
 package com.ap.homebanking;
 import com.ap.homebanking.Enum.CardColor;
 import com.ap.homebanking.Enum.CardType;
+import com.ap.homebanking.Enum.RoleType;
 import com.ap.homebanking.Enum.TransactionType;
 import com.ap.homebanking.models.*;
 import com.ap.homebanking.repositories.*;
@@ -29,8 +30,8 @@ public class HomebankingApplication {
             Account account1 = new Account("VIN001", LocalDate.now(), 5000);
             Account account2 = new Account("VIN002", LocalDate.now(), 7500);
 
-            Client client1 = new Client("Melba", "Morel", "melba@mindhub.com", "Mortgage", passwordEncoder.encode("1234"));
-            Client client2 = new Client("Dana","Amerio","danaamerio07@gmail.com", "personal",passwordEncoder.encode("4567"));
+            Client client1 = new Client("Melba", "Morel", "melba@mindhub.com", "Mortgage", passwordEncoder.encode("1234"), RoleType.CLIENT);
+            Client client2 = new Client("Dana","Amerio","danaamerio07@gmail.com", "personal",passwordEncoder.encode("4567"), RoleType.CLIENT);
 
             clientRepository.save(client1);
             clientRepository.save(client2);
@@ -72,8 +73,8 @@ public class HomebankingApplication {
 
             /////////////////////////////////////////
 
-            Card card1 = new Card("Melba Morel", CardType.DEBITO, CardColor.GOLD, "4456 5544 6789 7123", "254", LocalDate.now(), LocalDate.now().plusYears(5));
-            Card card2 = new Card("Melba Morel", CardType.CREDITO, CardColor.TITANIUM, "7890 4244 7611 7895", "997", LocalDate.now(), LocalDate.now().plusYears(5));
+            Card card1 = new Card(client1.getFirstName()+" "+client1.getLastName(), CardType.DEBITO, CardColor.GOLD, "4456 5544 6789 7123", "254", LocalDate.now(), LocalDate.now().plusYears(5));
+            Card card2 = new Card(client1.getFirstName()+" "+client1.getLastName(), CardType.CREDITO, CardColor.TITANIUM, "7890 4244 7611 7895", "997", LocalDate.now(), LocalDate.now().plusYears(5));
 
             client1.addCard(card1);
             client1.addCard(card2);

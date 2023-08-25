@@ -1,8 +1,10 @@
 package com.ap.homebanking.models;
+import com.ap.homebanking.Enum.RoleType;
 import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+
 
 @Entity
 public class Client {
@@ -16,6 +18,7 @@ public class Client {
     private String email;
     private String loan;
     private String password;
+    private RoleType role;
 
     @OneToMany(mappedBy="client", fetch=FetchType.EAGER)
     Set<Account> accounts = new HashSet<>();
@@ -28,12 +31,13 @@ public class Client {
     private Set<Card> cards = new HashSet<>();
     public Client(){}
 
-    public Client(String firstName, String lastName, String email, String loan, String password){
+    public Client(String firstName, String lastName, String email, String loan, String password, RoleType role){
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.loan = loan;
         this.password = password;
+        this.role = role;
 
     }
 
@@ -101,6 +105,14 @@ public class Client {
         this.password = password;
     }
 
+    public RoleType getRole() {
+        return role;
+    }
+
+    public void setRole(RoleType role) {
+        this.role = role;
+    }
+
     public void addAccount (Account account){
         account.setClient(this);
         accounts.add(account);
@@ -115,6 +127,5 @@ public class Client {
         card.setClient(this);
         cards.add(card);
     }
-
 
 }

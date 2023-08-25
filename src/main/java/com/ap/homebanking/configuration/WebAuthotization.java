@@ -20,11 +20,20 @@ public class WebAuthotization {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/web/index.html").permitAll()
-                .antMatchers(HttpMethod.POST,"/api/login", "/api/logout").permitAll()
-                .antMatchers("/client/**").hasAuthority("CLIENT")
-                .antMatchers( "/api/clients/current").hasAuthority("CLIENT")
-                .antMatchers("/**").hasAuthority("USER");
+
+                .antMatchers(HttpMethod.POST, "/api/login").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/logout").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/clients").permitAll().antMatchers("/web/index.html").permitAll()
+                .antMatchers("/api/clients/current").hasAuthority("CLIENT")
+                .antMatchers("/api/clients/current/accounts").hasAuthority("CLIENT")
+                .antMatchers("/web/accounts.html").hasAuthority("CLIENT")
+                .antMatchers("/web/account.html").hasAuthority("CLIENT")
+                .antMatchers("/web/cards.html").hasAuthority("CLIENT")
+                .antMatchers("/api/clients").hasAuthority("ADMIN")
+                .antMatchers("/clients/{id}").hasAuthority("ADMIN")
+                .antMatchers("/rest/**").hasAuthority("ADMIN")
+                .antMatchers("/h2-console").hasAuthority("ADMIN");
+
 
         http.formLogin()
                 .usernameParameter("email")
@@ -49,8 +58,5 @@ public class WebAuthotization {
         if (session != null) {
             session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
         }
-
     }
-
-
 }
