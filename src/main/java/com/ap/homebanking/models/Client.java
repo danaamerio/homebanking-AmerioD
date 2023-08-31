@@ -21,7 +21,7 @@ public class Client {
     private RoleType role;
 
     @OneToMany(mappedBy="client", fetch=FetchType.EAGER)
-    Set<Account> accounts = new HashSet<>();
+    private Set<Account> accounts = new HashSet<>();
 
     @OneToMany(mappedBy="client",fetch = FetchType.EAGER)
     private Set<ClientLoan> loans = new HashSet<>();
@@ -128,4 +128,8 @@ public class Client {
         cards.add(card);
     }
 
+    public void addAccounts(Account accountnew) {
+        accountnew.setClient(this);
+        accounts.add(accountnew);
+    }
 }

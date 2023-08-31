@@ -1,7 +1,10 @@
 package com.ap.homebanking.dtos;
+
 import com.ap.homebanking.models.Account;
+
 import java.time.LocalDate;
 import java.util.List;
+
 import static java.util.stream.Collectors.toList;
 
 public class AccountDTO {
@@ -22,6 +25,7 @@ public class AccountDTO {
                 .map(AccountDTO::new)
                 .collect(toList());
     }
+
 
 
 }

@@ -44,7 +44,7 @@ public class HomebankingApplication {
 
             ///////////////////////////////////////////
 
-            Transaction transaction1 = new Transaction(TransactionType.DEBITO, 100000.0, "pago alquiler", LocalDateTime.now());
+            Transaction transaction1 = new Transaction(TransactionType.DEBITO, -100000.0, "pago alquiler", LocalDateTime.now());
             Transaction transaction2 = new Transaction(TransactionType.CREDITO, 150000.0, "sueldo", LocalDateTime.now());
 
             account1.addTransaction(transaction1);

@@ -13,7 +13,7 @@ public class LoanController {
     @Autowired
     private LoanRepository loanRepository;
 
-    @RequestMapping ("/api/loans")
+    @RequestMapping ("/loans")
     public List<Loan> getLoans() {
         return loanRepository.findAll();
     }

@@ -1,11 +1,8 @@
 package com.ap.homebanking.dtos;
-import com.ap.homebanking.models.Card;
 import com.ap.homebanking.models.Client;
-import com.ap.homebanking.models.ClientLoan;
-
 import java.util.List;
 import java.util.Set;
-
+import java.util.stream.Collectors;
 import static java.util.stream.Collectors.toList;
 
 public class ClientDTO {
@@ -14,8 +11,9 @@ public class ClientDTO {
     private String firstName;
     private String lastName;
     private String email;
-    private Set<ClientLoan> loans;
-    private Set<Card> cards;
+    private Set<ClientLoanDTO> loans;
+    private Set<AccountDTO> accounts;
+    private Set<CardDTO> cards;
     private String password;
 
     public ClientDTO(Client client) {
@@ -23,20 +21,21 @@ public class ClientDTO {
         this.firstName = client.getFirstName();
         this.lastName = client.getLastName();
         this.email = client.getEmail();
-        this.loans = client.getLoans();
-        this.cards = client.getCards();
+        this.loans = client.getLoans().stream().map(clientLoan -> new ClientLoanDTO(clientLoan))
+                .collect(Collectors.toSet());
+        this.accounts = client.getAccounts().stream()
+                .map(account -> new AccountDTO(account))
+                .collect(Collectors.toSet());
+        this.cards = client.getCards().stream().map(card -> new CardDTO(card))
+                .collect(Collectors.toSet());
         this.password = client.getPassword();
     }
 
-    public static List<ClientDTO> mapToDTOList(List<Client> clients) {
-        return clients.stream()
-                .map(ClientDTO::new)
-                .collect(toList());
-    }
 
     public Long getId() {
         return id;
     }
+
 
     public String getFirstName() {
         return firstName;
@@ -50,15 +49,13 @@ public class ClientDTO {
         return email;
     }
 
-    public Set<ClientLoan> getLoans() {
-        return loans;
-    }
-
-    public Set<Card> getCards() {
-        return cards;
-    }
-
     public String getPassword() {
         return password;
+    }
+
+    public static List<ClientDTO> mapToDTOList(List<Client> clients) {
+        return clients.stream()
+                .map(ClientDTO::new)
+                .collect(toList());
     }
 }

@@ -14,7 +14,12 @@
 </head>
 
 <body>
-    <div id="app">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+    <div id="app" v-cloak>
         <div class="toast-container position-absolute p-3 top-0 end-0" id="toastPlacement">
             <div id="danger-toast" data-bs-delay="2000" class="toast align-items-center text-white bg-danger border-0"
                 role="alert" aria-live="assertive" aria-atomic="true">
@@ -31,7 +36,7 @@
             <div class="row mt-5">
                 <div class="col-12 col-md-2">
                     <div class="">
-                        <a href="/static/webtic/web/accounts.html"
+                        <a href="/web/accounts.html"
                             class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
                             <img class="menu-logo" src="img/Mindhub-logo.png">
 
@@ -39,25 +44,25 @@
                         <hr>
                         <ul class="nav nav-pills flex-column mb-auto">
                             <li class="nav-item">
-                                <a href="/static/webtic/web/accounts.html" class="nav-link link-dark">
+                                <a href="/web/accounts.html" class="nav-link link-dark">
                                     <i class="bi bi-inboxes"></i>
                                     Accounts
                                 </a>
                             </li>
                             <li>
-                                <a href="/static/webtic/web/cards.html" class="nav-link active">
+                                <a href="/web/cards.html" class="nav-link active">
                                     <i class="bi bi-credit-card"></i>
                                     Cards
                                 </a>
                             </li>
                             <li>
-                                <a href="/static/web/transfers.html" class="nav-link link-dark">
+                                <a href="/web/transfers.html" class="nav-link link-dark">
                                     <i class="bi bi-box-arrow-right"></i>
                                     Transfers
                                 </a>
                             </li>
                             <li>
-                                <a href="/static/web/loan-application.html" class="nav-link link-dark">
+                                <a href="/web/loan-application.html" class="nav-link link-dark">
                                     <i class="bi bi-cash"></i>
                                     Loans
                                 </a>
@@ -78,6 +83,8 @@
                     <div class="row mt-3">
                         <div class="col">
                             <h2 class="display-6 subtitle">Debit Cards</h2>
+                            <a v-if="clientInfo.cards != null && clientInfo.cards.length < 6" href="create-cards.html"
+                                id="create" class="btn btn-sm btn-success">Create</a>
                             <div v-if="debitCards.length <= 0"><span class="small">No debit cards</span></div>
                         </div>
                     </div>

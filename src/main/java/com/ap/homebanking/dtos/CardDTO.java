@@ -29,6 +29,38 @@ public class CardDTO {
         this.fromDate = card.getFromDate();
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public String getCardholder() {
+        return cardholder;
+    }
+
+    public CardType getType() {
+        return type;
+    }
+
+    public CardColor getColor() {
+        return color;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public String getCvv() {
+        return cvv;
+    }
+
+    public LocalDate getThruDate() {
+        return thruDate;
+    }
+
+    public LocalDate getFromDate() {
+        return fromDate;
+    }
+
     public static List<CardDTO> mapToDTOList(List<Card> cards) {
         return cards.stream()
                 .map(CardDTO::new)
