@@ -26,7 +26,8 @@ public class WebAuthotization {
                 .antMatchers("/api/clients/current", "/api/accounts/**", "/api/loans").hasAnyAuthority("ADMIN","CLIENT")
                 .antMatchers("/api/clients/current/accounts","/api/clients/current/cards","/api/clients/current/cards","/web/accounts.html", "/web/account.html","/web/cards.html").hasAuthority("CLIENT")
                 .antMatchers("/clients/{id}").hasAnyAuthority("CLIENT", "ADMIN")
-                .antMatchers(/*"/h2-console/*",*/"/rest/**","/api/clients").hasAuthority("ADMIN");
+                .antMatchers("/rest/**","/api/clients").hasAuthority("ADMIN")
+                        .anyRequest().hasAuthority("ADMIN");
 
 
 

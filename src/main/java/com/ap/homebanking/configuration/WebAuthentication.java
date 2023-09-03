@@ -1,6 +1,5 @@
 package com.ap.homebanking.configuration;
 
-import com.ap.homebanking.Enum.RoleType;
 import com.ap.homebanking.models.Client;
 import com.ap.homebanking.repositories.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,30 +19,25 @@ public class WebAuthentication extends GlobalAuthenticationConfigurerAdapter {
     @Autowired
     ClientRepository clientRepository;
 
+
     @Override
     public void init(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(inputName-> {
+        auth.userDetailsService(inputName -> {
             Client client = clientRepository.findByEmail(inputName);
             if (client != null) {
-
-
-
-                if(client.getRole().equals(RoleType.ADMIN)){
+                if (client.getEmail().equals("@admin.com")) {
                     return new User(client.getEmail(), client.getPassword(),
                             AuthorityUtils.createAuthorityList("ADMIN"));
-                }
-
-                else {
+                } else {
                     return new User(client.getEmail(), client.getPassword(),
                             AuthorityUtils.createAuthorityList("CLIENT"));
                 }
-
-
             } else {
                 throw new UsernameNotFoundException("Unknown user: " + inputName);
             }
         });
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
