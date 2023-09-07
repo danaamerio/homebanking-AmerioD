@@ -20,8 +20,10 @@ public class WebAuthotization {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/h2-console/*").permitAll()
+                      //  .antMatchers("/**").permitAll();
+               .antMatchers("/h2-console/*").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/login","/api/logout","/api/clients").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/loans").hasAnyAuthority("ADMIN","CLIENT")
                 .antMatchers("/web/index.html","/web/index.js","/web/styles/**").permitAll()
                 .antMatchers("/api/clients/current", "/api/accounts/**", "/api/loans").hasAnyAuthority("ADMIN","CLIENT")
                 .antMatchers("/api/clients/current/accounts","/api/clients/current/cards","/api/clients/current/cards","/web/accounts.html", "/web/account.html","/web/cards.html").hasAuthority("CLIENT")

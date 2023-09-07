@@ -4,8 +4,9 @@ import com.ap.homebanking.dtos.ClientDTO;
 import com.ap.homebanking.dtos.ClientRequestDTO;
 import com.ap.homebanking.models.Account;
 import com.ap.homebanking.models.Client;
-import com.ap.homebanking.repositories.AccountRepository;
-import com.ap.homebanking.repositories.ClientRepository;
+import com.ap.homebanking.services.implement.account.AccountService;
+import com.ap.homebanking.services.implement.card.CardService;
+import com.ap.homebanking.services.implement.client.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,24 +17,31 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping ("/api")
 public class ClientController {
 
+   // @Autowired
+    //private ClientRepository clientRepository;
+    //@Autowired
+    //private AccountRepository accountRepository;
     @Autowired
-    private ClientRepository clientRepository;
-    private AccountRepository accountRepository;
+    private ClientService clientService;
+    @Autowired
+    private CardService cardService;
+
+    @Autowired
+    private AccountService accountService;
 
     @RequestMapping("/clients")
     public  List<ClientDTO> getClients(){
-        return clientRepository.findAll().stream().map(client -> new ClientDTO(client)).collect(Collectors.toList());
+        return clientService.getAllClients();
     }
 
     @RequestMapping("/clients/{id}")
     public ClientDTO getClient(@PathVariable Long id) {
-        return clientRepository.findById(id).map(ClientDTO::new).orElse(null);
+        return clientService.getClient(id);
     }
 
 
@@ -51,20 +59,22 @@ public class ClientController {
         }
 
 
-        if (clientRepository.findByEmail(clientRequestDTO.getEmail()) !=  null) {
-            return new ResponseEntity<>("Name already in use", HttpStatus.FORBIDDEN);
+        if (!clientService.findByEmail(clientRequestDTO.getEmail())) {
+            return new ResponseEntity<>("Email already in use", HttpStatus.FORBIDDEN);
         }
+
 
         Client clientnew = new Client(clientRequestDTO.getFirstName(),
                                 clientRequestDTO.getLastName(), clientRequestDTO.getEmail(),
                                 clientRequestDTO.getLoan(), clientRequestDTO.getPassword(),
                                 clientRequestDTO.getRole());
-        clientRepository.save(clientnew);
+        clientService.save(clientnew);
 
 
         Account accountnew = new Account("VIN-" + getRandomNumber(1000000, 99999999), LocalDate.now(),0.00);
         clientnew.addAccounts(accountnew);
-        accountRepository.save(accountnew);
+
+        accountService.save(accountnew);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
 
@@ -82,9 +92,7 @@ public class ClientController {
 
     @RequestMapping("/clients/current")
     public ClientDTO getClientCurrent(Authentication authentication) {
-        ClientDTO clientDTO = new ClientDTO(clientRepository
-                .findByEmail(authentication.getName()));
-        return clientDTO;
+       return clientService.getClientDTOByEmail(authentication.getName());
     }
 
 

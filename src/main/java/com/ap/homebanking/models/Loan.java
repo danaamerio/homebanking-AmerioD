@@ -64,4 +64,7 @@ import java.util.Set;
         clientLoan.setLoan(this);
         clients.add(clientLoan);
     }
+
+    public void setAmount(Object amount) {
+    }
 }
