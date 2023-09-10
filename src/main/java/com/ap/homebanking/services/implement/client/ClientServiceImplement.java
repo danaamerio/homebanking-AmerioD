@@ -39,6 +39,7 @@ public class ClientServiceImplement implements ClientService {
 
     @Override
     public void save(Client clientnew) {
+        clientRepository.save(clientnew);
 
     }
 
