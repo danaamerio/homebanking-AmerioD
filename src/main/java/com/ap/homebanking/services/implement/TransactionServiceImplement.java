@@ -1,7 +1,8 @@
-package com.ap.homebanking.services.implement.transaction;
+package com.ap.homebanking.services.implement;
 
 import com.ap.homebanking.models.Account;
 import com.ap.homebanking.models.Client;
+import com.ap.homebanking.models.Transaction;
 import com.ap.homebanking.repositories.AccountRepository;
 import com.ap.homebanking.repositories.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,5 +34,10 @@ public class TransactionServiceImplement implements TransactionService {
         Account clientAccountsTo = accountRepository.findByNumber(accountToNumber);
 
         return new ResponseEntity<>("Transaction created successfully", HttpStatus.OK);
+    }
+
+    @Override
+    public void saveTransaction(Transaction transaction) {
+
     }
 }

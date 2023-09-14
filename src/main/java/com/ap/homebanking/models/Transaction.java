@@ -1,3 +1,4 @@
+// Clase Transaction
 package com.ap.homebanking.models;
 
 import com.ap.homebanking.Enum.TransactionType;
@@ -17,16 +18,21 @@ public class Transaction {
     private String description;
     private LocalDateTime dateTime;
 
+    @Column(name = "current_balance")
+    private Double currentBalance;
 
-@ManyToOne(fetch = FetchType.EAGER)
-private Account account;
-    public Transaction(){}
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Account account;
 
-    public Transaction(TransactionType type, Double amount,String description, LocalDateTime dateTime){
+    public Transaction() {
+    }
+
+    public Transaction(TransactionType type, Double amount, String description, LocalDateTime dateTime, Double currentBalance) {
         this.type = type;
         this.amount = amount;
         this.description = description;
         this.dateTime = dateTime;
+        this.currentBalance = currentBalance;
     }
 
     public Long getId() {
@@ -63,6 +69,14 @@ private Account account;
 
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public Double getCurrentBalance() {
+        return currentBalance;
+    }
+
+    public void setCurrentBalance(Double currentBalance) {
+        this.currentBalance = currentBalance;
     }
 
     public Account getAccount() {

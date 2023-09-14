@@ -1,4 +1,4 @@
-package com.ap.homebanking.services.implement.loan;
+package com.ap.homebanking.services.implement;
 
 import com.ap.homebanking.dtos.LoanApplicationDTO;
 import com.ap.homebanking.models.Loan;

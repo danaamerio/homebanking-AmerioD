@@ -1,4 +1,5 @@
 package com.ap.homebanking;
+
 import com.ap.homebanking.Enum.CardColor;
 import com.ap.homebanking.Enum.CardType;
 import com.ap.homebanking.Enum.RoleType;
@@ -11,6 +12,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -44,8 +46,8 @@ public class HomebankingApplication {
 
             ///////////////////////////////////////////
 
-            Transaction transaction1 = new Transaction(TransactionType.DEBITO, -100000.0, "pago alquiler", LocalDateTime.now());
-            Transaction transaction2 = new Transaction(TransactionType.CREDITO, 150000.0, "sueldo", LocalDateTime.now());
+            Transaction transaction1 = new Transaction(TransactionType.DEBIT, -100000.0, "pago alquiler", LocalDateTime.now(),50000.0);
+            Transaction transaction2 = new Transaction(TransactionType.CREDIT, 150000.0, "sueldo", LocalDateTime.now(),250000.0);
 
             account1.addTransaction(transaction1);
             account1.addTransaction(transaction2);
@@ -73,8 +75,8 @@ public class HomebankingApplication {
 
             /////////////////////////////////////////
 
-            Card card1 = new Card(client1.getFirstName()+" "+client1.getLastName(), CardType.DEBITO, CardColor.GOLD, "4456 5544 6789 7123", "254", LocalDate.now(), LocalDate.now().plusYears(5));
-            Card card2 = new Card(client1.getFirstName()+" "+client1.getLastName(), CardType.CREDITO, CardColor.TITANIUM, "7890 4244 7611 7895", "997", LocalDate.now(), LocalDate.now().plusYears(5));
+            Card card1 = new Card(client1.getFirstName()+" "+client1.getLastName(), CardType.DEBIT, CardColor.GOLD, "4456 5544 6789 7123", "254", LocalDate.now(), LocalDate.now().plusYears(5));
+            Card card2 = new Card(client1.getFirstName()+" "+client1.getLastName(), CardType.CREDIT, CardColor.TITANIUM, "7890 4244 7611 7895", "997", LocalDate.now(), LocalDate.now().plusYears(5));
 
             client1.addCard(card1);
             client1.addCard(card2);

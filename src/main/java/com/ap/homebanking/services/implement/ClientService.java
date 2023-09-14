@@ -1,4 +1,4 @@
-package com.ap.homebanking.services.implement.client;
+package com.ap.homebanking.services.implement;
 
 import com.ap.homebanking.dtos.ClientDTO;
 import com.ap.homebanking.models.Client;
@@ -13,7 +13,7 @@ public interface ClientService {
     ClientDTO getClientCurrent(String email);
 
 
-    boolean findByEmail(String email);
+  Client findByEmail(String email);
 
     void save(Client clientnew);
 

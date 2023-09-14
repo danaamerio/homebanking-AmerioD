@@ -1,68 +1,67 @@
 package com.ap.homebanking.controllers;
 
+import com.ap.homebanking.Enum.AccountType;
 import com.ap.homebanking.dtos.AccountDTO;
 import com.ap.homebanking.models.Account;
 import com.ap.homebanking.models.Client;
-import com.ap.homebanking.repositories.AccountRepository;
-import com.ap.homebanking.repositories.ClientRepository;
-import com.ap.homebanking.services.implement.account.AccountService;
-import com.ap.homebanking.services.implement.client.ClientService;
+import com.ap.homebanking.services.implement.AccountService;
+import com.ap.homebanking.services.implement.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
-
 @RestController
 @RequestMapping("/api")
 public class AccountController {
 
-    //@Autowired
-    //private AccountRepository accountRepository;
-    //@Autowired
-    //private ClientRepository clientRepository;
     @Autowired
     private AccountService accountService;
     @Autowired
     private ClientService clientService;
 
-
-    @RequestMapping("/accounts")
-    public  List<AccountDTO> getAccounts(){
-        return accountService.findAll().stream().map(account -> new AccountDTO(account)).collect(Collectors.toList());
+    @GetMapping("/accounts")
+    public List<AccountDTO> getAccounts() {
+        return accountService.getAccounts();
     }
 
-    @RequestMapping("/accounts/{id}")
+    @GetMapping("/accounts/{id}")
     public AccountDTO getAccount(@PathVariable Long id) {
-        return accountService.findById(id).map(AccountDTO::new).orElse(null);
+        return accountService.getAccount(id);
     }
 
-    @RequestMapping(value = "clients/current/accounts",method = RequestMethod.POST)
-    public ResponseEntity<Object> addAccount (Authentication authentication){
+    @PostMapping(value = "clients/current/accounts")
+    public ResponseEntity<Object> addAccount(
+            @RequestParam double initialBalance,
+            @RequestParam String accountType, // Tipo de cuenta seleccionado (CORRIENTE o AHORRO)
+            Authentication authentication) {
+
         Client client = clientService.findByEmail(authentication.getName());
 
-        if (client.getAccounts().size()<3){
-            Account account1 = new Account("VIN-" + getRandomNumber(1000000, 99999999), LocalDate.now(),0.00);
-            client.addAccounts(account1);
-            accountService.save(account1);
+        if (client.getAccounts().size() < 3) {
+            if (initialBalance <= 0 || accountType.isBlank()) {
+                return new ResponseEntity<>("Datos faltantes o inválidos", HttpStatus.BAD_REQUEST);
+            }
+
+            // Convierte el tipo de cuenta en una enumeración AccountType
+            AccountType type = AccountType.valueOf(accountType.toUpperCase());
+
+            Account account = new Account("VIN-" + getRandomNumber(1000000, 99999999), LocalDate.now(), initialBalance);
+            account.setAccountType(type);
+            client.addAccounts(account);
+            accountService.save(account);
             return new ResponseEntity<>(HttpStatus.CREATED);
-        }
-        else{
+        } else {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-
     }
-    public  int getRandomNumber(int min, int max){
+
+    public int getRandomNumber(int min, int max) {
         return (int) ((Math.random() * (max - min)) + min);
     }
-
 }
 
 

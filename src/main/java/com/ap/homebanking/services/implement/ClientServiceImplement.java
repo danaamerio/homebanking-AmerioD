@@ -1,4 +1,4 @@
-package com.ap.homebanking.services.implement.client;
+package com.ap.homebanking.services.implement;
 
 import com.ap.homebanking.dtos.ClientDTO;
 import com.ap.homebanking.models.Client;
@@ -33,8 +33,9 @@ public class ClientServiceImplement implements ClientService {
     }
 
     @Override
-    public boolean findByEmail(String email) {
-        return false;
+    public Client findByEmail(String email) {
+
+        return clientRepository.findByEmail(email);
     }
 
     @Override

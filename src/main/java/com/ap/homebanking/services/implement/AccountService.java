@@ -1,4 +1,4 @@
-package com.ap.homebanking.services.implement.account;
+package com.ap.homebanking.services.implement;
 
 import com.ap.homebanking.dtos.AccountDTO;
 import com.ap.homebanking.models.Account;

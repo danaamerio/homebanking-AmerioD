@@ -4,9 +4,9 @@ import com.ap.homebanking.dtos.ClientDTO;
 import com.ap.homebanking.dtos.ClientRequestDTO;
 import com.ap.homebanking.models.Account;
 import com.ap.homebanking.models.Client;
-import com.ap.homebanking.services.implement.account.AccountService;
-import com.ap.homebanking.services.implement.card.CardService;
-import com.ap.homebanking.services.implement.client.ClientService;
+import com.ap.homebanking.services.implement.AccountService;
+import com.ap.homebanking.services.implement.CardService;
+import com.ap.homebanking.services.implement.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,12 +34,13 @@ public class ClientController {
     @Autowired
     private AccountService accountService;
 
-    @RequestMapping("/clients")
+
+    @GetMapping("/clients")
     public  List<ClientDTO> getClients(){
         return clientService.getAllClients();
     }
 
-    @RequestMapping("/clients/{id}")
+    @GetMapping("/clients/{id}")
     public ClientDTO getClient(@PathVariable Long id) {
         return clientService.getClient(id);
     }
@@ -58,8 +59,7 @@ public class ClientController {
             return new ResponseEntity<>("Missing data", HttpStatus.FORBIDDEN);
         }
 
-
-        if (!clientService.findByEmail(clientRequestDTO.getEmail())) {
+        if (clientService.findByEmail(clientRequestDTO.getEmail()) !=  null) {
             return new ResponseEntity<>("Email already in use", HttpStatus.FORBIDDEN);
         }
 
@@ -90,7 +90,7 @@ public class ClientController {
     }
 
 
-    @RequestMapping("/clients/current")
+    @GetMapping("/clients/current")
     public ClientDTO getClientCurrent(Authentication authentication) {
        return clientService.getClientDTOByEmail(authentication.getName());
     }

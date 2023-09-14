@@ -1,5 +1,6 @@
-package com.ap.homebanking.services.implement.transaction;
+package com.ap.homebanking.services.implement;
 
+import com.ap.homebanking.models.Transaction;
 import org.springframework.http.ResponseEntity;
 
 public interface TransactionService {
@@ -10,4 +11,6 @@ public interface TransactionService {
             String accountToNumber,
             String email
     );
+
+    void saveTransaction(Transaction transaction);
 }

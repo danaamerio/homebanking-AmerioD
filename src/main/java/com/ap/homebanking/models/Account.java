@@ -1,5 +1,8 @@
 package com.ap.homebanking.models;
+
+import com.ap.homebanking.Enum.AccountType;
 import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -7,7 +10,6 @@ import java.util.Set;
 
 @Entity
 public class Account {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
@@ -15,23 +17,28 @@ public class Account {
     private String number;
     private LocalDate creationDate;
     private double balance;
+    private AccountType accountType; // Nuevo campo para el tipo de cuenta: CTA.CORRIENTE o CJA. AHORRO
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="client_id")
+    @JoinColumn(name = "client_id")
     private Client client;
 
-    @OneToMany(mappedBy="account", fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "account", fetch = FetchType.EAGER)
     Set<Transaction> transactions = new HashSet<>();
 
-    public Account() {}
+    public Account() {
+    }
 
-    public Account( String number, LocalDate creationDate, double balance){
+    public Account(String number, LocalDate creationDate, double balance) {
         this.number = number;
         this.creationDate = creationDate;
         this.balance = balance;
     }
 
-    public Long getId(){return id;}
+    public Long getId() {
+        return id;
+    }
+
     public String getNumber() {
         return number;
     }
@@ -64,7 +71,15 @@ public class Account {
         this.client = client;
     }
 
-    public void addTransaction(Transaction transaction){
+    public AccountType getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(AccountType accountType) {
+        this.accountType = accountType;
+    }
+
+    public void addTransaction(Transaction transaction) {
         transaction.setAccount(this);
         transactions.add(transaction);
     }

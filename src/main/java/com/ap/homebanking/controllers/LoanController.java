@@ -1,21 +1,20 @@
 package com.ap.homebanking.controllers;
+
 import com.ap.homebanking.dtos.LoanApplicationDTO;
 import com.ap.homebanking.dtos.LoanDTO;
 import com.ap.homebanking.models.Account;
 import com.ap.homebanking.models.Client;
 import com.ap.homebanking.models.ClientLoan;
 import com.ap.homebanking.models.Loan;
-import com.ap.homebanking.repositories.AccountRepository;
-import com.ap.homebanking.repositories.ClientRepository;
-import com.ap.homebanking.repositories.LoanRepository;
-import com.ap.homebanking.services.implement.account.AccountService;
-import com.ap.homebanking.services.implement.client.ClientService;
-import com.ap.homebanking.services.implement.loan.LoanService;
+import com.ap.homebanking.services.implement.AccountService;
+import com.ap.homebanking.services.implement.ClientService;
+import com.ap.homebanking.services.implement.LoanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -25,12 +24,13 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 public class LoanController {
 
-/*   @Autowired
+ /*  @Autowired
     private LoanRepository loanRepository;
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
     private ClientRepository clientRepository;*/
+
     @Autowired
     private LoanService loanService;
     @Autowired
@@ -84,7 +84,7 @@ public class LoanController {
             return new ResponseEntity<>("La cuenta de destino no pertenece al cliente autenticado", HttpStatus.FORBIDDEN);
         }
 
-        // Calcula el monto del préstamo (el 20%)
+        //////////////////// porcentaje ajustable de prestamo (el 20%)/////////////////////////
         double amount = loanApplicationDTO.getMaxAmount() * 0.2;
 
         // Crea el objeto ClientLoan
